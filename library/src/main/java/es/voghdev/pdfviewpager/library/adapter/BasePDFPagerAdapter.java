@@ -52,7 +52,7 @@ public class BasePDFPagerAdapter extends PagerAdapter {
     protected float renderQuality;
     protected int offScreenSize;
 
-    public BasePDFPagerAdapter(Context context, String... pdfPaths) {
+    public BasePDFPagerAdapter(Context context, String... pdfPaths) throws IOException {
         this.pdfPaths = Arrays.asList(pdfPaths);
         this.context = context;
         this.renderQuality = DEFAULT_QUALITY;
@@ -64,7 +64,7 @@ public class BasePDFPagerAdapter extends PagerAdapter {
     /**
      * This constructor was added for those who want to customize ViewPager's offScreenSize attr
      */
-    public BasePDFPagerAdapter(Context context, Iterable<String> pdfPaths, int offScreenSize) {
+    public BasePDFPagerAdapter(Context context, Iterable<String> pdfPaths, int offScreenSize) throws IOException {
         this.pdfPaths = pdfPaths;
         this.context = context;
         this.renderQuality = DEFAULT_QUALITY;
@@ -74,20 +74,16 @@ public class BasePDFPagerAdapter extends PagerAdapter {
     }
 
     @SuppressWarnings("NewApi")
-    protected void init() {
-        try {
-            renderers = new ArrayList<>();
-            bitmapContainers = new ArrayList<>();
-            for (String pdfPath : pdfPaths) {
-                PdfRenderer renderer = new PdfRenderer(getSeekableFileDescriptor(pdfPath));
-                renderers.add(renderer);
-                PdfRendererParams params = extractPdfParamsFromFirstPage(renderer, renderQuality);
-                bitmapContainers.add(new SimpleBitmapPool(params));
-            }
-            inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        } catch (IOException e) {
-            e.printStackTrace();
+    protected void init() throws IOException {
+        renderers = new ArrayList<>();
+        bitmapContainers = new ArrayList<>();
+        for (String pdfPath : pdfPaths) {
+            PdfRenderer renderer = new PdfRenderer(getSeekableFileDescriptor(pdfPath));
+            renderers.add(renderer);
+            PdfRendererParams params = extractPdfParamsFromFirstPage(renderer, renderQuality);
+            bitmapContainers.add(new SimpleBitmapPool(params));
         }
+        inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
     }
 
     @SuppressWarnings("NewApi")

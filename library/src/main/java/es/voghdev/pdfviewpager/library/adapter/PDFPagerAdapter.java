@@ -22,6 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.view.ViewPager;
 
+import java.io.IOException;
+
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 
@@ -35,7 +37,7 @@ public class PDFPagerAdapter extends BasePDFPagerAdapter {
     PdfScale scale = new PdfScale();
     View.OnClickListener pageClickListener = new EmptyClickListener();
 
-    public PDFPagerAdapter(Context context, String... pdfPaths) {
+    public PDFPagerAdapter(Context context, String... pdfPaths) throws IOException {
         super(context, pdfPaths);
     }
 
@@ -132,7 +134,7 @@ public class PDFPagerAdapter extends BasePDFPagerAdapter {
             return this;
         }
 
-        public PDFPagerAdapter create() {
+        public PDFPagerAdapter create() throws IOException {
             PDFPagerAdapter adapter = new PDFPagerAdapter(context, pdfPaths);
             adapter.scale.setScale(scale);
             adapter.scale.setCenterX(centerX);

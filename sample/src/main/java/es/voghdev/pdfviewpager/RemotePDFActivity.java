@@ -23,6 +23,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import java.io.IOException;
+
 import es.voghdev.pdfviewpager.library.RemotePDFViewPager;
 import es.voghdev.pdfviewpager.library.adapter.PDFPagerAdapter;
 import es.voghdev.pdfviewpager.library.remote.DownloadFile;
@@ -99,7 +101,12 @@ public class RemotePDFActivity extends BaseSampleActivity implements DownloadFil
 
     @Override
     public void onSuccess(String url, String destinationPath) {
-        adapter = new PDFPagerAdapter(this, FileUtil.extractFileNameFromURL(url));
+        try {
+            adapter = new PDFPagerAdapter(this, FileUtil.extractFileNameFromURL(url));
+        } catch(IOException e) {
+            e.printStackTrace();
+            return;
+        }
         remotePDFViewPager.setAdapter(adapter);
         updateLayout();
         showDownloadButton();
