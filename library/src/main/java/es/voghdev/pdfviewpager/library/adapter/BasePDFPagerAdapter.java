@@ -179,11 +179,23 @@ public class BasePDFPagerAdapter extends PagerAdapter {
         int globalPosition = 0;
 
         if (localPosition.pdfIndex >= renderers.size()) {
-            throw new IndexOutOfBoundsException("PDF index is greater than number of PDFs");
+            throw new IndexOutOfBoundsException(
+                    String.format(
+                            "PDF index (%d) is greater than number of PDFs (%d)",
+                            localPosition.pdfIndex,
+                            renderers.size()
+                    )
+            );
         }
 
         if (localPosition.pageIndex >= renderers.get(localPosition.pdfIndex).getPageCount()) {
-            throw new IndexOutOfBoundsException("Page index is greater than the PDF page count");
+            throw new IndexOutOfBoundsException(
+                    String.format(
+                            "Page index (%d) is greater than the PDF page count (%d)",
+                            localPosition.pageIndex,
+                            renderers.get(localPosition.pdfIndex).getPageCount()
+                    )
+            );
         }
 
         for (int i = 0; i < localPosition.pdfIndex; i++) {
